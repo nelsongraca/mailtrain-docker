@@ -1,0 +1,23 @@
+#!/usr/bin/with-contenv sh
+set -e
+
+echo "" > /mailtrain/config/production.toml
+echo "[mysql]" >> /mailtrain/config/production.toml
+echo "host=\"localhost\"" >> /mailtrain/config/production.toml
+echo "user=\"${MYSQL_USER}\"" >> /mailtrain/config/production.toml
+echo "password=\"${MYSQL_PASSWORD}\"" >> /mailtrain/config/production.toml
+echo "database=\"${MYSQL_DATABASE}\"" >> /mailtrain/config/production.toml
+
+if [ "$LDAP_URL" != "" ]; then
+    echo "" >> /mailtrain/config/production.toml
+    echo "[ldapauth]" >> /mailtrain/config/production.toml
+    echo "enabled=true" >> /mailtrain/config/production.toml
+    echo "url=\"${LDAP_URL}\"" >> /mailtrain/config/production.toml
+    echo "baseDN=\"${LDAP_BASE_DN}\"" >> /mailtrain/config/production.toml
+    echo "filter=\"${LDAP_FILTER}\"" >> /mailtrain/config/production.toml
+    echo "uidTag=\"${LDAP_USERNAME_ATTRIBUTE}\"" >> /mailtrain/config/production.toml
+    echo "bindUser=\"${LDAP_BIND_DN}\"" >> /mailtrain/config/production.toml
+    echo "bindPassword=\"${LDAP_BIND_PASSWORD}\"" >> /mailtrain/config/production.toml
+fi
+
+cp /mailtrain/config/production.toml /mailtrain/workers/reports/config/production.toml
